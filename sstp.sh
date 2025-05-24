@@ -3,16 +3,15 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ## qq:1247004718
 ##======================
 SPW=admin888888
-USERNAME_DEF=888a
+USERNAME_DEF=a111
 PASSWORD_DEF=888888
 ##====================
-
-macradon(){
+macradon() {
 FIXED_OUI="5E-99-9E"
 RANDOM_BYTES=$(openssl rand -hex 3 | fold -w 2 | paste -sd '-' -)
 FULL_MAC="${FIXED_OUI}-${RANDOM_BYTES}"
 echo "$FULL_MAC"
-
+}
 
 INTERVAL=1
 PIP=$(curl ip.sb)
@@ -21,18 +20,17 @@ DEFAULT_HUB=DEFAULT
 MACHR=$(echo $(macradon) | tr a-z A-Z)
 
 install_vpn() {
-
 pkill vpnserver
 rm -rf /usr/bin/vpnserver
 rm -f vpn.tar.gz
 rm -f vpn.conf
 rm -f nft.nat
 URL=https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-x64-64bit.tar.gz
-wget -O vpn.tar.gz $URL 2>&1> /dev/null
+wget -O vpn.tar.gz $URL 2>&1 > /dev/null
 if [[ $? -ne 0 ]];then
 		echo -e "Download Failed" && exit 4
 	    fi
-tar -zxvf vpn.tar.gz 2>&1 >/dev/null
+tar -zxvf vpn.tar.gz 2>&1 > /dev/null
 cd vpnserver && make 2>&1 > /dev/null
 cd ..
 cp -a vpnserver /usr/bin/ 2>&1 >/dev/null 
@@ -53,10 +51,6 @@ systemctl daemon-reload && systemctl enable vpnserver
 systemctl start vpnserver  && echo -e "\n\n vpnserver start!" && sleep 2
 
 }
-
-}
-
-
 pre_conf() {
 	clear
 	#echo ""
@@ -84,7 +78,7 @@ pre_conf() {
 
 }	
 nftnat() {
-	apt-get install nftables && systemctl enable nftables
+	systemctl enable nftables
 	echo '
 #!/usr/sbin/nft -f
 #
@@ -99,7 +93,7 @@ table ip nat {
 	 systemctl start nftables
 	 echo "net.ipv4.ip_forward=1" | tee -a /etc/sysctl.conf && sysctl -p
 }
-apt update -y && apt install nftables build-essential -y
+apt update -y && apt install nftables build-essential nftables -y
 install_vpn
 nftnat
 clear

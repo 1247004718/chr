@@ -12,6 +12,15 @@ RANDOM_BYTES=$(openssl rand -hex 3 | fold -w 2 | paste -sd '-' -)
 FULL_MAC="${FIXED_OUI}-${RANDOM_BYTES}"
 echo "$FULL_MAC"
 }
+#added 2025-05-28
+dnsnew() {
+resolvectl status|grep -q stub
+if [[  $? -ne  0 ]]; then
+    rm /etc/resolv.conf
+    ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+    echo "dns ok"
+fi
+}
 
 INTERVAL=1
 PIP=$(curl ip.sb)
@@ -98,3 +107,4 @@ install_vpn
 nftnat
 clear
 pre_conf
+dnsrew

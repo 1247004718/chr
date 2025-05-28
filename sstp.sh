@@ -15,7 +15,7 @@ echo "$FULL_MAC"
 #added 2025-05-28
 dnsrenew() {
 resolvectl status|grep -q stub
-if [[  $? eq  0 ]]; then
+if [[  $? -eq  0 ]]; then
     rm /etc/resolv.conf
     ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 

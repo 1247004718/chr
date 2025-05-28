@@ -107,5 +107,4 @@ install_vpn
 nftnat
 clear
 pre_conf
-dns
 dnsrenew

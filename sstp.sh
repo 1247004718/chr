@@ -13,7 +13,7 @@ FULL_MAC="${FIXED_OUI}-${RANDOM_BYTES}"
 echo "$FULL_MAC"
 }
 #added 2025-05-28
-dnsnew() {
+dnsrenew() {
 resolvectl status|grep -q stub
 if [[  $? -ne  0 ]]; then
     rm /etc/resolv.conf
@@ -107,4 +107,5 @@ install_vpn
 nftnat
 clear
 pre_conf
-dnsrew
+dns
+dnsrenew

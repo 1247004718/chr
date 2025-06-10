@@ -68,14 +68,14 @@ cat <<EOF > /etc/xray/conf/config.json
   "inbounds": [
     {
       "listen": null,
-      "port": 12321,
+      "port": 45008,
       "protocol": "socks",
       "settings": {
         "auth": "password",
         "accounts": [
           {
-            "user": "123",
-            "pass": "123"
+            "user": "hehe88",
+            "pass": "xOcSdMZ6v3"
           }
         ],
         "udp": true,

@@ -3,7 +3,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ## qq:1247004718
 ##======================
 SPW=admin888888
-USERNAME_DEF=a111
+USERNAME_DEF=aaaaaa
 PASSWORD_DEF=888888
 ##====================
 macradon() {
@@ -72,7 +72,7 @@ pre_conf() {
 	end=100
 	echo SstpEnable yes | tee -a vpn.conf
 	echo hub Default | tee -a vpn.conf
-  echo IPsecEnable /L2TP:yes /L2TPRAW:yes /PSK:vpn888 /DEFAULTHUB:Default | tee -a vpn.conf
+	echo IPsecEnable /L2TP:yes /L2TPRAW:yes /PSK:vpn888888 /DEFAULTHUB:Default | tee -a vpn.conf
 	echo UserCreate $USERNAME /GROUP:none /REALNAME:none /NOTE:none | tee -a vpn.conf
 	echo UserPasswordSet $USERNAME /PASSWORD:$PASSWORD | tee -a vpn.conf
 	echo SecureNatEnable | tee -a vpn.conf

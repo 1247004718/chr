@@ -83,8 +83,8 @@ pre_conf() {
 	/usr/bin/vpnserver/vpncmd localhost:5555 /server /csv /in:vpn.conf 2>&1 > /dev/null && echo -e "\n##install finished##"
 	rm -rf vpnserver vpn.conf  vpn.tar.gz 2>&1 > /dev/null && echo -e "\n##remove vpn conf##"
 	echo ""
-	echo "l2tp Server : $PIP User: $USERNAME PASS:$PASSWORD" > ~/user.txt
-	echo "l2tp Server: $PIP User: $USERNAME PASS:$PASSWORD"
+	echo "l2tp Server: $PIP User: $USERNAME PASS:$PASSWORD IPSEC:$PSK" > ~/user.txt
+	echo "l2tp Server: $PIP User: $USERNAME PASS:$PASSWORD IPSEC:$PSK"
 
 }
 nftnat() {

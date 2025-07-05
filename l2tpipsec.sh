@@ -187,8 +187,8 @@ check_client_name() {
 
 check_subnets() {
   if [ -s /etc/ipsec.conf ] && grep -qs "hwdsl2 VPN script" /etc/sysctl.conf; then
-    L2TP_NET=${VPN_L2TP_NET:-'192.168.60.0/24'}
-    XAUTH_NET=${VPN_XAUTH_NET:-'192.168.61.0/24'}
+    L2TP_NET=${VPN_L2TP_NET:-'172.31.30.0/24'}
+    XAUTH_NET=${VPN_XAUTH_NET:-'172.31.31.0/24'}
     if ! grep -q "$L2TP_NET" /etc/ipsec.conf \
       || ! grep -q "$XAUTH_NET" /etc/ipsec.conf; then
       echo "Error: The custom VPN subnets specified do not match initial install." >&2
@@ -413,11 +413,11 @@ EOF
 
 create_vpn_config() {
   bigecho "Creating VPN configuration..."
-  L2TP_NET=${VPN_L2TP_NET:-'192.168.60.0/24'}
-  L2TP_LOCAL=${VPN_L2TP_LOCAL:-'192.168.60.254'}
-  L2TP_POOL=${VPN_L2TP_POOL:-'192.168.60.10-192.168.60.250'}
-  XAUTH_NET=${VPN_XAUTH_NET:-'192.168.61.0/24'}
-  XAUTH_POOL=${VPN_XAUTH_POOL:-'192.168.61.10-192.168.61.250'}
+  L2TP_NET=${VPN_L2TP_NET:-'172.31.30.0/24'}
+  L2TP_LOCAL=${VPN_L2TP_LOCAL:-'172.31.30.254'}
+  L2TP_POOL=${VPN_L2TP_POOL:-'172.31.30.10-172.31.30.250'}
+  XAUTH_NET=${VPN_XAUTH_NET:-'172.31.31.0/24'}
+  XAUTH_POOL=${VPN_XAUTH_POOL:-'172.31.31.10-172.31.31.250'}
   DNS_SRV1=${VPN_DNS_SRV1:-'8.8.8.8'}
   DNS_SRV2=${VPN_DNS_SRV2:-'8.8.4.4'}
   DNS_SRVS="\"$DNS_SRV1 $DNS_SRV2\""
@@ -527,24 +527,8 @@ cat > /etc/ppp/chap-secrets <<EOF
 EOF
 #useradd
 for i in $(seq 1 10); do
-  echo "\"$VPN_USER$i\" l2tpd \"$VPN_PASSWORD\" 192.168.$((40+i)).1" >> /etc/ppp/chap-secrets
+  echo "\"$VPN_USER$i\" l2tpd \"$VPN_PASSWORD\" 172.30.$i.100" >> /etc/ppp/chap-secrets
 done
-##tableadd
-for i in $(seq 1 10); do
-  echo "$((100+i)) v$i" >> /etc/iproute2/rt_tables
-done
-##ruleadd
-for i in $(seq 1 10); do
- ip rule add from 192.168.$((40+i)).0/24 table v$i
-done
-#routeadd
-for i in $(seq 1 10); do
-  ip route add default table v$i via "10.18.$i.1"
-done
-#iptableadd,fix ip address
-#for i in $(seq 1 10); do
-#  iptable -t nat -A POSTROUTING -s 192.168.$((40+i)).0/24 -j SNAT --to-source 10.18.$i.2
-#done
 
   conf_bk "/etc/ipsec.d/passwd"
   VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
@@ -619,7 +603,6 @@ update_iptables() {
     #$ipf 7 -s "$XAUTH_NET" -o ppp+ -j ACCEPT
     iptables -A FORWARD -j DROP
     #$ipp -s "$XAUTH_NET" -o "$NET_IFACE" -m policy --dir out --pol none -j MASQUERADE
-    for i in $(seq 1 10); do iptable -t nat -A POSTROUTING -s 192.168.$((40+i)).0/24 -j SNAT --to-source 10.18.$i.2 ;done
     #$ipp -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
     ##edit this iptables
     echo "# Modified by hwdsl2 VPN script" > "$IPT_FILE"

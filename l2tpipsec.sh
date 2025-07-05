@@ -24,8 +24,8 @@
 # - DO NOT use these special characters within values: \ " '
 
 YOUR_IPSEC_PSK='88888888'
-YOUR_USERNAME='abcabc'
-YOUR_PASSWORD='888888'
+YOUR_USERNAME='AG'
+YOUR_PASSWORD='88888888'
 
 # =====================================================
 

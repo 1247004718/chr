@@ -593,12 +593,13 @@ update_iptables() {
     $ipf 2 -i "$NET_IFACE" -o ppp+ -m conntrack --ctstate "$res" -j ACCEPT
     $ipf 3 -i ppp+ -o "$NET_IFACE" -j ACCEPT
     $ipf 4 -i ppp+ -o ppp+ -j ACCEPT
-    $ipf 5 -i "$NET_IFACE" -d "$XAUTH_NET" -m conntrack --ctstate "$res" -j ACCEPT
-    $ipf 6 -s "$XAUTH_NET" -o "$NET_IFACE" -j ACCEPT
-    $ipf 7 -s "$XAUTH_NET" -o ppp+ -j ACCEPT
+    ##$ipf 5 -i "$NET_IFACE" -d "$XAUTH_NET" -m conntrack --ctstate "$res" -j ACCEPT
+    #$ipf 6 -s "$XAUTH_NET" -o "$NET_IFACE" -j ACCEPT
+    #$ipf 7 -s "$XAUTH_NET" -o ppp+ -j ACCEPT
     iptables -A FORWARD -j DROP
-    $ipp -s "$XAUTH_NET" -o "$NET_IFACE" -m policy --dir out --pol none -j MASQUERADE
+    #$ipp -s "$XAUTH_NET" -o "$NET_IFACE" -m policy --dir out --pol none -j MASQUERADE
     $ipp -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
+    ##edit this iptables
     echo "# Modified by hwdsl2 VPN script" > "$IPT_FILE"
     iptables-save >> "$IPT_FILE"
     if [ -f "$IPT_FILE2" ]; then
@@ -706,29 +707,15 @@ cat <<EOF
 ================================================
 
 IPsec VPN server is now ready for use!
-
 Connect to your new VPN with these details:
-
 Server IP: $public_ip
 IPsec PSK: $VPN_IPSEC_PSK
 Username: $VPN_USER
 Password: $VPN_PASSWORD
 
 Write these down. You'll need them to connect!
-
-VPN client setup: https://vpnsetup.net/clients
-
 ================================================
-
 EOF
-  if [ ! -e /dev/ppp ]; then
-cat <<'EOF'
-Warning: /dev/ppp is missing, and IPsec/L2TP mode may not work.
-         Please use IKEv2 or IPsec/XAuth mode to connect.
-         Debian 11/10 users, see https://vpnsetup.net/debian10
-
-EOF
-  fi
 }
 
 set_up_ikev2() {
@@ -796,7 +783,7 @@ vpnsetup() {
   enable_on_boot
   start_services
   show_vpn_info
-  set_up_ikev2
+  #set_up_ikev2
 }
 
 ## Defer setup until we have the complete script

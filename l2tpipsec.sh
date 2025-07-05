@@ -187,7 +187,7 @@ check_client_name() {
 
 check_subnets() {
   if [ -s /etc/ipsec.conf ] && grep -qs "hwdsl2 VPN script" /etc/sysctl.conf; then
-    L2TP_NET=${VPN_L2TP_NET:-'192.168.59.0/24'}
+    L2TP_NET=${VPN_L2TP_NET:-'192.168.60.0/24'}
     XAUTH_NET=${VPN_XAUTH_NET:-'192.168.61.0/24'}
     if ! grep -q "$L2TP_NET" /etc/ipsec.conf \
       || ! grep -q "$XAUTH_NET" /etc/ipsec.conf; then
@@ -413,9 +413,9 @@ EOF
 
 create_vpn_config() {
   bigecho "Creating VPN configuration..."
-  L2TP_NET=${VPN_L2TP_NET:-'192.168.59.0/24'}
+  L2TP_NET=${VPN_L2TP_NET:-'192.168.60.0/24'}
   L2TP_LOCAL=${VPN_L2TP_LOCAL:-'192.168.60.254'}
-  L2TP_POOL=${VPN_L2TP_POOL:-'192.168.59.10-192.168.59.250'}
+  L2TP_POOL=${VPN_L2TP_POOL:-'192.168.60.10-192.168.60.250'}
   XAUTH_NET=${VPN_XAUTH_NET:-'192.168.61.0/24'}
   XAUTH_POOL=${VPN_XAUTH_POOL:-'192.168.61.10-192.168.61.250'}
   DNS_SRV1=${VPN_DNS_SRV1:-'8.8.8.8'}
@@ -761,16 +761,11 @@ set_up_ikev2() {
   elif [ -s /opt/src/ikev2.sh ]; then
 cat <<'EOF'
 ================================================
-
 IKEv2 is already set up on this server.
-
 Next steps: Configure IKEv2 clients. See:
 https://vpnsetup.net/clients
-
 To manage IKEv2 clients, run: sudo ikev2.sh
-
 ================================================
-
 EOF
   fi
 }
@@ -805,6 +800,7 @@ vpnsetup() {
   enable_on_boot
   start_services
   show_vpn_info
+  set_up_ikev2
 }
 
 ## Defer setup until we have the complete script

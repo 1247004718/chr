@@ -527,7 +527,7 @@ cat > /etc/ppp/chap-secrets <<EOF
 EOF
 #useradd
 for i in $(seq 1 10); do
-  echo "\"$VPN_USER$i\" l2tpd \"$VPN_PASSWORD\" 172.30.$i.100" >> /etc/ppp/chap-secrets
+  echo "\"$VPN_USER$i\" l2tpd \"$VPN_PASSWORD\" 172.31.$i.100" >> /etc/ppp/chap-secrets
 done
 
   conf_bk "/etc/ipsec.d/passwd"

@@ -298,7 +298,7 @@ WantedBy=multi-user.target" >> /etc/systemd/system/openvpn-iptables.service
 
 	clear
 	echo -e "\n###ATTETION###"
-	echo "##put your openvpn conf file to /etc/openvpn/client folder then run systemctl enable --now openvpn-client@youname.service"
+	echo "##put your openvpn conf file to /etc/openvpn/client folder then run systemctl enable --now openvpn-client@name.service"
 	echo "You can  running this script to remove openvpn."
 else
 	clear

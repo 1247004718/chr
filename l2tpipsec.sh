@@ -187,8 +187,8 @@ check_client_name() {
 
 check_subnets() {
   if [ -s /etc/ipsec.conf ] && grep -qs "hwdsl2 VPN script" /etc/sysctl.conf; then
-    L2TP_NET=${VPN_L2TP_NET:-'192.168.42.0/24'}
-    XAUTH_NET=${VPN_XAUTH_NET:-'192.168.43.0/24'}
+    L2TP_NET=${VPN_L2TP_NET:-'192.168.59.0/24'}
+    XAUTH_NET=${VPN_XAUTH_NET:-'192.168.61.0/24'}
     if ! grep -q "$L2TP_NET" /etc/ipsec.conf \
       || ! grep -q "$XAUTH_NET" /etc/ipsec.conf; then
       echo "Error: The custom VPN subnets specified do not match initial install." >&2
@@ -805,7 +805,6 @@ vpnsetup() {
   enable_on_boot
   start_services
   show_vpn_info
-  #set_up_ikev2
 }
 
 ## Defer setup until we have the complete script

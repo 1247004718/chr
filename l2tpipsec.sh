@@ -542,9 +542,9 @@ for i in $(seq 1 10); do
   ip route add default table v$i via "10.18.$i.1"
 done
 #iptableadd,fix ip address
-for i in $(seq 1 10); do
-  iptable -t nat -A POSTROUTING -s 192.168.$((40+i)).0/24 -j SNAT --to-source 10.18.$i.2
-done
+#for i in $(seq 1 10); do
+#  iptable -t nat -A POSTROUTING -s 192.168.$((40+i)).0/24 -j SNAT --to-source 10.18.$i.2
+#done
 
   conf_bk "/etc/ipsec.d/passwd"
   VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
@@ -619,7 +619,8 @@ update_iptables() {
     #$ipf 7 -s "$XAUTH_NET" -o ppp+ -j ACCEPT
     iptables -A FORWARD -j DROP
     #$ipp -s "$XAUTH_NET" -o "$NET_IFACE" -m policy --dir out --pol none -j MASQUERADE
-    $ipp -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
+    for i in $(seq 1 10); do iptable -t nat -A POSTROUTING -s 192.168.$((40+i)).0/24 -j SNAT --to-source 10.18.$i.2 ;done
+    #$ipp -s "$L2TP_NET" -o "$NET_IFACE" -j MASQUERADE
     ##edit this iptables
     echo "# Modified by hwdsl2 VPN script" > "$IPT_FILE"
     iptables-save >> "$IPT_FILE"
